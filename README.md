@@ -73,7 +73,7 @@ Le composant `ProductsComponent` appelle le service au chargement (`ngOnInit`) p
 
 Chaque ligne du tableau contient un bouton **Delete** qui déclenche la méthode `handleDeleteProduct(product)`.
 
-![Capture d'écran](src="./app_screenshot.jpg")
+![Capture d'écran](img/app_screenshot.jpg)
 
 ```typescript
 handleDeleteProduct(product: any) {
