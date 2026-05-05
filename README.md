@@ -1,4 +1,68 @@
-# EnsetAppTp3
+# 📘 Compte Rendu : TP3 – Angular 19 & Spring Boot REST API
+
+## 1. Introduction
+Ce TP porte sur le développement d'une application frontend avec **Angular 19** qui communique avec une **API REST Spring Boot** pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances, programmation réactive avec RxJS, et communication HTTP avec un backend.
+
+## 2. Structure du Projet
+L'organisation du projet Angular suit une architecture modulaire standard :
+
+```text
+EnsetAppTp3/
+├── .vscode/                    # Configuration VS Code
+├── public/                     # Assets publics
+├── src/
+│   ├── app/
+│   │   ├── products/           # Composant d'affichage des produits
+│   │   ├── services/           # Service d'appels API
+│   │   ├── app.config.ts       # Configuration globale (HttpClient)
+│   │   ├── app.routes.ts       # Configuration du routage
+│   │   └── app.component.ts    # Composant racine
+│   ├── assets/                 # Images, fonts, etc.
+│   ├── index.html              # Page principale
+│   └── main.ts                 # Point d'entrée
+├── .editorconfig               # Configuration éditeur
+├── .gitignore                  # Fichiers ignorés par Git
+├── .prettierrc                 # Configuration formateur code
+├── angular.json                # Configuration Angular CLI
+├── enset-app-tp3.iml           # Fichier module IntelliJ
+├── package.json                # Dépendances npm
+├── package-lock.json           # Verrouillage versions
+├── tsconfig.app.json           # Configuration TS app
+├── tsconfig.json               # Configuration TS principale
+├── tsconfig.spec.json          # Configuration TS tests
+└── README.md                   # Ce fichier# 📘 Compte Rendu : TP3 – Angular 19 & Spring Boot REST API
+
+## 1. Introduction
+Ce TP porte sur le développement d'une application frontend avec **Angular 19** qui communique avec une **API REST Spring Boot** pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances, programmation réactive avec RxJS, et communication HTTP avec un backend.
+
+## 2. Structure du Projet
+L'organisation du projet Angular suit une architecture modulaire standard :
+
+```text
+EnsetAppTp3/
+├── .vscode/                    # Configuration VS Code
+├── public/                     # Assets publics
+├── src/
+│   ├── app/
+│   │   ├── products/           # Composant d'affichage des produits
+│   │   ├── services/           # Service d'appels API
+│   │   ├── app.config.ts       # Configuration globale (HttpClient)
+│   │   ├── app.routes.ts       # Configuration du routage
+│   │   └── app.component.ts    # Composant racine
+│   ├── assets/                 # Images, fonts, etc.
+│   ├── index.html              # Page principale
+│   └── main.ts                 # Point d'entrée
+├── .editorconfig               # Configuration éditeur
+├── .gitignore                  # Fichiers ignorés par Git
+├── .prettierrc                 # Configuration formateur code
+├── angular.json                # Configuration Angular CLI
+├── enset-app-tp3.iml           # Fichier module IntelliJ
+├── package.json                # Dépendances npm
+├── package-lock.json           # Verrouillage versions
+├── tsconfig.app.json           # Configuration TS app
+├── tsconfig.json               # Configuration TS principale
+├── tsconfig.spec.json          # Configuration TS tests
+└── README.md                   # Ce fichier# EnsetAppTp3
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
 
