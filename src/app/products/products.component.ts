@@ -19,4 +19,8 @@ export class ProductsComponent implements OnInit {
       { id: 3, name: 'Smart Phone', price: 1100, selected: true },
     ]
   }
+
+  protected handleDelete(product: any) {
+    this.products = this.products.filter((p:any)=>p.id != product.id)
+  }
 }
