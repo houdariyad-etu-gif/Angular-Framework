@@ -1,7 +1,7 @@
 # 📘 Compte Rendu : TP3 – Angular 19 & Spring Boot REST API
 
 ## 1. Introduction
-Ce TP porte sur le développement d'une application frontend avec **Angular 19** qui communique avec une **API REST Spring Boot** pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances, programmation réactive avec RxJS, et communication HTTP avec un backend.
+Ce TP porte sur le développement d'une application frontend avec **Angular 19** qui communique avec une **API REST Spring Boot** pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances, et communication HTTP avec un backend.
 
 ## 2. Structure du Projet
 L'organisation du projet Angular suit une architecture modulaire standard :
