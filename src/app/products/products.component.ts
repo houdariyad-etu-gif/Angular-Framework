@@ -19,13 +19,26 @@ export class ProductsComponent implements OnInit {
   }
 
   getAllProducts(){
-    this.products = this.productService.getAllproducts();
+    this.productService.getAllproducts().subscribe({
+      next : resp  => {
+        this.products = resp;
+      },
+      error : err => {
+        console.log(err);
+      }
+    });
   }
   handleDelete(product: any) {
-    let v = confirm("etes vous sure de vouloir supprimer?");
-    if(v==true){
-      this.productService.deleteProduct(product);
-      this.getAllProducts();
+    let v = confirm('etes vous sure de vouloir supprimer?');
+    if (v == true) {
+      this.productService.deleteProduct(product).subscribe({
+        next: (value) => {
+          this.getAllProducts();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 }
