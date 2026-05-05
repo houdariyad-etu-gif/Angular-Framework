@@ -1,123 +1,137 @@
-# 📘 Compte Rendu : TP3 – Angular 19 & Spring Boot REST API
+📘 Compte Rendu : TP3 – Angular 19 & Spring Boot REST API
 
-## 1. Introduction
-Ce TP porte sur le développement d'une application frontend avec **Angular 19** qui communique avec une **API REST Spring Boot** pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances et communication HTTP avec un backend.
+1. Introduction
+Ce TP porte sur le développement d'une application frontend avec Angular 19 qui communique avec une API REST Spring Boot pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances et communication HTTP avec un backend.
 
-## 2. Structure du Projet
-L'organisation du projet Angular suit une architecture modulaire standard :
+2. Architecture Technique de la Solution
 
-```text
-EnsetAppTp3/
-├── .vscode/                    # Configuration VS Code
-├── public/                     # Assets publics
-├── src/
-│   ├── app/
-│   │   ├── products/           # Composant d'affichage des produits
-│   │   ├── services/           # Service d'appels API
-│   │   ├── app.config.ts       # Configuration globale (HttpClient)
-│   │   ├── app.routes.ts       # Configuration du routage
-│   │   └── app.component.ts    # Composant racine
-│   ├── assets/                 # Images, fonts, etc.
-│   ├── index.html              # Page principale
-│   └── main.ts                 # Point d'entrée
-├── .editorconfig               # Configuration éditeur
-├── .gitignore                  # Fichiers ignorés par Git
-├── .prettierrc                 # Configuration formateur code
-├── angular.json                # Configuration Angular CLI
-├── enset-app-tp3.iml           # Fichier module IntelliJ
-├── package.json                # Dépendances npm
-├── package-lock.json           # Verrouillage versions
-├── tsconfig.app.json           # Configuration TS app
-├── tsconfig.json               # Configuration TS principale
-├── tsconfig.spec.json          # Configuration TS tests
-└── README.md                   # Ce fichier# 📘 Compte Rendu : TP3 – Angular 19 & Spring Boot REST API
+A. Architecture Globale
+Le projet respecte une architecture client-serveur avec une séparation claire des responsabilités :
 
-## 1. Introduction
-Ce TP porte sur le développement d'une application frontend avec **Angular 19** qui communique avec une **API REST Spring Boot** pour la gestion de produits. L'objectif principal est de mettre en pratique les concepts fondamentaux d'Angular : composants standalone, services, injection de dépendances, programmation réactive avec RxJS, et communication HTTP avec un backend.
+- Frontend (Angular 19) : Gère l'interface utilisateur, les événements, et l'affichage des données.
+- Backend (Spring Boot) : Expose une API REST sur le port 8083 avec les endpoints CRUD pour les produits.
+- Communication : Échange de données JSON via le protocole HTTP.
 
-## 2. Structure du Projet
-L'organisation du projet Angular suit une architecture modulaire standard :
+B. Composants Angular
+| Composant | Rôle | Éléments clés |
+|-----------|------|----------------|
+| `ProductsComponent` | Affiche la liste des produits dans un tableau HTML | `*ngFor`, `subscribe()`, event binding (delete) |
+| `ProductService` | Encapsule les appels API REST | `HttpClient`, `Observable`, méthodes `getAllproducts()` et `deleteProduct()` |
 
-```text
-EnsetAppTp3/
-├── .vscode/                    # Configuration VS Code
-├── public/                     # Assets publics
-├── src/
-│   ├── app/
-│   │   ├── products/           # Composant d'affichage des produits
-│   │   ├── services/           # Service d'appels API
-│   │   ├── app.config.ts       # Configuration globale (HttpClient)
-│   │   ├── app.routes.ts       # Configuration du routage
-│   │   └── app.component.ts    # Composant racine
-│   ├── assets/                 # Images, fonts, etc.
-│   ├── index.html              # Page principale
-│   └── main.ts                 # Point d'entrée
-├── .editorconfig               # Configuration éditeur
-├── .gitignore                  # Fichiers ignorés par Git
-├── .prettierrc                 # Configuration formateur code
-├── angular.json                # Configuration Angular CLI
-├── enset-app-tp3.iml           # Fichier module IntelliJ
-├── package.json                # Dépendances npm
-├── package-lock.json           # Verrouillage versions
-├── tsconfig.app.json           # Configuration TS app
-├── tsconfig.json               # Configuration TS principale
-├── tsconfig.spec.json          # Configuration TS tests
-└── README.md                   # Ce fichier# EnsetAppTp3
+C. Service et Injection de Dépendances
+Le service ProductService est injecté au niveau racine (providedIn: 'root') et utilise HttpClient pour interagir avec le backend :
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+typescript
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  constructor(private http: HttpClient) {}
 
-## Development server
+  getAllproducts(): Observable<any> {
+    return this.http.get('http://localhost:8083/products');
+  }
 
-To start a local development server, run:
+  deleteProduct(product: any): Observable<any> {
+    return this.http.delete('http://localhost:8083/products/' + product.id);
+  }
+}
 
-```bash
-ng serve
-```
+3. Fonctionnalités Implémentées
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+A. Affichage des Produits
+Le composant ProductsComponent appelle le service au chargement (ngOnInit) pour récupérer la liste des produits via subscribe() et les stocke dans une variable locale products.
 
-## Code scaffolding
+| Élément | Description |
+|---------|-------------|
+| Méthode HTTP | `GET http://localhost:8083/products` |
+| Framework | RxJS (`Observable`, `subscribe`) |
+| Affichage | Tableau HTML avec `*ngFor` |
+| Icons | Bootstrap icons pour l'interface utilisateur |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+B. Suppression d'un Produit
+Chaque ligne du tableau contient un bouton "Delete" qui déclenche la méthode handleDeleteProduct(product).
+<img width="1912" height="612" alt="image" src="https://github.com/user-attachments/assets/4bfe853e-2a2c-4e47-98cc-2e4b86c1339e" />
 
-```bash
-ng generate component component-name
-```
+typescript
+handleDeleteProduct(product: any) {
+  this.productService.deleteProduct(product).subscribe({
+    next: () => this.getAllProducts(),  // Rafraîchit la liste
+    error: (err) => console.log(err)
+  });
+}
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+C. Configuration du Client HTTP
+Le fichier app.config.ts active le client HTTP pour toute l'application :
 
-```bash
-ng generate --help
-```
+typescript
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient()      // Nécessaire pour HttpClient
+  ]
+};
 
-## Building
+D. Routage et Navigation
+L'application intègre un système de routage avec app.routes.ts permettant la navigation entre les différentes vues.
 
-To build the project run:
+E. Documentation API avec Swagger-UI
+Le projet est lié au backend Spring Boot et utilise Swagger-UI pour la documentation et le test des endpoints REST.
 
-```bash
-ng build
-```
+4. Intégration avec le Backend Spring Boot
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+A. Endpoints attendus du backend
+| Méthode | URL | Description |
+|---------|-----|-------------|
+| GET | `/products` | Retourne la liste des produits (JSON) |
+| DELETE | `/products/{id}` | Supprime un produit par son ID |
 
-## Running unit tests
+B. Configuration CORS (côté Spring Boot)
+Pour permettre la communication entre Angular (port 4200) et Spring Boot (port 8083), le backend doit inclure l'annotation @CrossOrigin :
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+java
+@RestController
+@CrossOrigin("*")
+public class ProductRestController {
+    // ...
+}
 
-```bash
-ng test
-```
+5. Exécution du Projet
+Prérequis
+Node.js (v18+)
 
-## Running end-to-end tests
+npm ou yarn
 
-For end-to-end (e2e) testing, run:
+Backend Spring Boot démarré sur le port 8083
 
-```bash
-ng e2e
-```
+Étapes
+bash
+# 1. Installer les dépendances
+npm install
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+# 2. Lancer l'application Angular
+npm start
 
-## Additional Resources
+# 3. Accéder à l'application
+# Ouvrir http://localhost:4200/prods
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+6. Dépendances Principales
+Dépendance	Version	Utilité
+@angular/core	19.x	Framework Angular
+@angular/common	19.x	HttpClient, directives communes
+@angular/router	19.x	Routage et navigation
+bootstrap-icons	Latest	Icônes pour l'interface
+
+
+7. Compétences Acquises
+- Création d'un projet Angular 19 avec composants standalone
+- Injection de dépendances et création de services
+- Communication HTTP avec HttpClient
+- Manipulation des données asynchrones avec Observable et subscribe
+- Intégration frontend/backend via API REST
+- Gestion des erreurs et débogage des problèmes CORS
+- Utilisation de Swagger-UI pour la documentation API
+- Intégration d'icônes Bootstrap
+
+8. Conclusion
+Ce TP a permis de mettre en pratique les concepts fondamentaux d'Angular 19 dans le cadre d'une application réelle communiquant avec une API REST Spring Boot. La combinaison d'Angular pour le frontend et Spring Boot pour le backend illustre une architecture moderne de type full-stack largement utilisée dans les applications d'entreprise.
+
+L'ajout de Swagger-UI facilite la documentation et le test des endpoints, tandis que l'intégration des icônes Bootstrap améliore l'expérience utilisateur. La séparation claire des couches (présentation, service, API) facilite la maintenance et l'évolution du projet.
